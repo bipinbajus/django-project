@@ -151,10 +151,6 @@ def show_exam_result(request, course_id, submission_id):
     submission = get_object_or_404(Submission, pk=submission_id)
     questions = Question.objects.filter(course=course)
 
-    a = course.question_set.all()
-    for b in a:
-        print(b.grade)
-    
     choices = submission.choices.all()
     points=0
     totalGrade = 0
@@ -168,7 +164,7 @@ def show_exam_result(request, course_id, submission_id):
         totalGrade += question.grade        
     
     score = int(points/totalGrade * 100)    
-    print(selected_ids)
+    
     context['course'] = course
     context['selected_ids'] = selected_ids
     context['grade'] = score
