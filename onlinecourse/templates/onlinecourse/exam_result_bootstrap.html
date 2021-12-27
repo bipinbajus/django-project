@@ -49,18 +49,24 @@
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
         {% if user.is_authenticated %}
+       
         {% for question in course.question_set.all %}
         <div class="card mt-1">
             <div class="card-header"><h5>{{ question.question_text}}</h5></div>
                 {% csrf_token %}
                 <div class="form-group">
                     {% for choice in question.choice_set.all %}
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" name="choice_{{choice.id}}"
-                                    class="form-check-input" id="{{choice.id}}"
-                                    value="{{choice.id}}">{{ choice.choice_text }}
-                            </label>
+                        <div>
+                            {% if choice.is_correct %}
+                                {% if choice.id in selected_ids %}
+                                    <div style='color:green'>Correct answer: {{choice.choice_text}}</div>
+                                {% else %}
+                                    <div style='color:orange'>Not selected: {{choice.choice_text}}</div>
+                                {% endif %}
+                            {% else %}
+                                {{choice.choice_text}}
+                            {% endif%}
+                            
                         </div>
                     {% endfor %}
                 </div>
