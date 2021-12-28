@@ -56,18 +56,15 @@
                 {% csrf_token %}
                 <div class="card-body">
                     {% for choice in question.choice_set.all %}
-                        <div>
-                            {% if choice.is_correct %}
-                                {% if choice.id in selected_ids %}
-                                    <div class="text-success">Correct answer: {{choice.choice_text}}</div>
-                                {% else %}
-                                    <div class="text-warning">Not selected: {{choice.choice_text}}</div>
-                                {% endif %}
-                            {% else %}
-                                {{choice.choice_text}}
-                            {% endif%}
-                            
-                        </div>
+                        {% if choice in selected_ids and choice.is_correct %}
+                            <p class="text-success">Correct answer: {{ choice.choice_text }}</p>
+                        {% elif choice in selected_ids and not choice.is_correct %}
+                            <p class="text-danger">Incorrect answer: {{ choice.choice_text }}</p>
+                        {% elif not choice in selected_ids and choice.is_correct %}
+                            <p class="text-warning">Not selected: {{ choice.choice_text }}</p>
+                        {% else %}
+                            <p class="text-dark">{{ choice.choice_text }}</p>
+                        {% endif %}
                     {% endfor %}
                 </div>
         </div>
